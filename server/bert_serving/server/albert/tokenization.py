@@ -224,6 +224,7 @@ class FullTokenizer(object):
         spm_model_file=spm_model_file)
 
   def tokenize(self, text):
+    #### ALBERT uses sentence piece if specified
     if self.sp_model:
       split_tokens = encode_pieces(self.sp_model, text, return_unicode=False)
     else:
