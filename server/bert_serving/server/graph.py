@@ -6,7 +6,7 @@ from enum import Enum
 
 from termcolor import colored
 
-from .bert import modeling
+from .albert import modeling
 from .helper import import_tf, set_logger
 
 __all__ = ['PoolingStrategy', 'optimize_graph']
@@ -57,7 +57,7 @@ def optimize_graph(args, logger=None):
             'checkpoint%s: %s' % (
             ' (override by the fine-tuned model)' if args.tuned_model_dir else '', init_checkpoint))
         with tf.gfile.GFile(config_fp, 'r') as f:
-            bert_config = modeling.BertConfig.from_dict(json.load(f))
+            albert_config = modeling.AlbertConfig.from_dict(json.load(f))
 
         logger.info('build graph...')
         # input placeholders, not sure if they are friendly to XLA
@@ -66,18 +66,18 @@ def optimize_graph(args, logger=None):
         input_type_ids = tf.placeholder(tf.int32, (None, None), 'input_type_ids')
 
         jit_scope = tf.contrib.compiler.jit.experimental_jit_scope if args.xla else contextlib.suppress
-
+        
+        # enable JIT compilation within the scope
         with jit_scope():
             input_tensors = [input_ids, input_mask, input_type_ids]
 
-            model = modeling.BertModel(
-                config=bert_config,
+            model = modeling.AlbertModel(
+                config=albert_config,
                 is_training=False,
                 input_ids=input_ids,
                 input_mask=input_mask,
                 token_type_ids=input_type_ids,
-                use_one_hot_embeddings=False,
-                use_position_embeddings=not args.no_position_embeddings)
+                use_one_hot_embeddings=False)
             
             if args.pooling_strategy == PoolingStrategy.CLASSIFICATION:
                 hidden_size = model.pooled_output.shape[-1].value
@@ -179,7 +179,7 @@ def optimize_graph(args, logger=None):
         logger.info('write graph to a tmp file: %s' % tmp_file)
         with tf.gfile.GFile(tmp_file, 'wb') as f:
             f.write(tmp_g.SerializeToString())
-        return tmp_file, bert_config
+        return tmp_file, albert_config
     except Exception:
         logger.error('fail to optimize the graph!', exc_info=True)
 

@@ -9,10 +9,10 @@ version_line = [l.strip() for l in libinfo_content if l.startswith('__version__'
 exec(version_line)  # produce __version__
 
 setup(
-    name='bert_serving_server',
+    name='albert_serving_server',
     version=__version__,
     description='Mapping a variable-length sentence to a fixed-length vector using BERT model (Server)',
-    url='https://github.com/hanxiao/bert-as-service',
+    url='https://github.com/maomao905/bert-as-service',
     long_description=open('README.md', 'r', encoding="utf8").read(),
     long_description_content_type='text/markdown',
     author='Han Xiao',
