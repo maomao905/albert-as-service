@@ -12,7 +12,7 @@ setup(
     name='albert_serving_server',
     version=__version__,
     description='Mapping a variable-length sentence to a fixed-length vector using BERT model (Server)',
-    url='https://github.com/maomao905/bert-as-service',
+    url='https://github.com/maomao905/albert-as-service',
     long_description=open('README.md', 'r', encoding="utf8").read(),
     long_description_content_type='text/markdown',
     author='Han Xiao',
@@ -22,15 +22,16 @@ setup(
     zip_safe=False,
     install_requires=[
         'numpy',
-        'six',
+        'six==1.15.0',
         'pyzmq>=17.1.0',
         'GPUtil>=1.3.0',
-        'termcolor>=1.1'
+        'termcolor>=1.1',
+        'sentencepiece',
     ],
     extras_require={
-        'cpu': ['tensorflow>=1.10.0'],
-        'gpu': ['tensorflow-gpu>=1.10.0'],
-        'http': ['flask', 'flask-compress', 'flask-cors', 'flask-json', 'bert-serving-client']
+        'cpu': ['tensorflow>=1.15.2'],
+        'gpu': ['tensorflow-gpu>=1.15.2'],
+        'http': ['flask', 'flask-compress', 'flask-cors', 'flask-json', 'bert-serving-client', 'flasgger']
     },
     classifiers=(
         'Programming Language :: Python :: 3.6',
@@ -39,9 +40,9 @@ setup(
         'Topic :: Scientific/Engineering :: Artificial Intelligence',
     ),
     entry_points={
-        'console_scripts': ['bert-serving-start=bert_serving.server.cli:main',
-                            'bert-serving-benchmark=bert_serving.server.cli:benchmark',
-                            'bert-serving-terminate=bert_serving.server.cli:terminate'],
+        'console_scripts': ['albert-serving-start=bert_serving.server.cli:main',
+                            'albert-serving-benchmark=bert_serving.server.cli:benchmark',
+                            'albert-serving-terminate=bert_serving.server.cli:terminate'],
     },
     keywords='bert nlp tensorflow machine learning sentence encoding embedding serving',
 )

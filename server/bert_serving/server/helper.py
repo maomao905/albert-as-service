@@ -81,12 +81,12 @@ def get_args_parser():
                                        'config the path, checkpoint and filename of a pretrained/fine-tuned BERT model')
     group1.add_argument('-model_dir', type=str, required=True,
                         help='directory of a pretrained BERT model')
-    group1.add_argument('-spm_model_file', type=str, required=True,
+    group1.add_argument('-spm_model_file', type=str, default='spm.model',
                         help='sentence piece model file')
     group1.add_argument('-tuned_model_dir', type=str,
                         help='directory of a fine-tuned BERT model')
-    group1.add_argument('-ckpt_name', type=str, default='albert_model.ckpt',
-                        help='filename of the checkpoint file. By default it is "albert_model.ckpt", but \
+    group1.add_argument('-ckpt_name', type=str, default='albert_model.ckpt-best',
+                        help='filename of the checkpoint file. By default it is "albert_model.ckpt-best", but \
                              for a fine-tuned model the name could be different.')
     group1.add_argument('-config_name', type=str, default='albert-config.json',
                         help='filename of the JSON config file for BERT model.')
@@ -163,6 +163,8 @@ def get_args_parser():
                              'the actual sequence lengths within each batch. When "pooling_strategy=NONE", '
                              'this may cause two ".encode()" from the same client results in different sizes [B, T, D].'
                              'Turn this on to fix the "T" in [B, T, D] to "max_position_embeddings" in bert json config.')
+    group3.add_argument('-swagger_file_path', type=str, default='bertApi.openapi.yaml',
+                        help='swagger yaml path')
 
     parser.add_argument('-verbose', action='store_true', default=False,
                         help='turn on tensorflow logging for debug')

@@ -34,7 +34,7 @@ class BertHTTPProxy(Process):
           'uiversion': 3,
           'openapi': '3.0.2'
         }
-        swag = Swagger(app, template_file='bertApi.openapi.yaml')
+        swag = Swagger(app, template_file=self.args.swagger_file_path)
 
         logger = set_logger(colored('PROXY', 'red'))
 

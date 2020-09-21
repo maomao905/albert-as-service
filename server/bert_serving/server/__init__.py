@@ -544,7 +544,7 @@ class BertWorker(Process):
             logger.info('job done\tsize: %s\tclient: %s' % (r['encodes'].shape, r['client_id']))
 
     def input_fn_builder(self, socks, tf, sink):
-        from .bert.extract_features import convert_lst_to_features
+        from .albert.extract_features import convert_lst_to_features
         from .albert.tokenization import FullTokenizer
 
         def gen():
